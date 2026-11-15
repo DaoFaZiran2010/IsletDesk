@@ -18,12 +18,12 @@ reports within 7 days.
 
 ## Threat model — read this before deploying
 
-AgentOrb gives an MCP client control of a real Windows desktop. That is the product, not a
+IsletDesk gives an MCP client control of a real Windows desktop. That is the product, not a
 defect. Be explicit about what that means:
 
 **In scope, by design**
 
-- Any MCP client that connects to `AgentOrb.Bridge.exe` can click, type, launch programs,
+- Any MCP client that connects to `IsletDesk.Bridge.exe` can click, type, launch programs,
   read screenshots and enumerate windows **inside the seat**.
 - The seat runs **as your Windows user** and shares your files, credentials, browser profiles
   and network. It is an input/attention boundary, **not a security sandbox**.
@@ -50,8 +50,8 @@ defect. Be explicit about what that means:
 **Known limitations**
 
 - The installer and the binaries are currently **unsigned**; SmartScreen will warn.
-- AgentOrb changes Windows settings (Remote Desktop host, child sessions, per-user autostart)
-  during installation. Review `AgentOrb.Setup.exe check` before and after.
+- IsletDesk changes Windows settings (Remote Desktop host, child sessions, per-user autostart)
+  during installation. Review `IsletDesk.Setup.exe check` before and after.
 - The NamedPipe status channel is optional for correctness: a broken UI never blocks tool calls.
 
 ## Safe harbour

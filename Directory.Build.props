@@ -1,10 +1,10 @@
 <Project>
   <PropertyGroup>
-    <Version>0.1.10</Version>
-    <FileVersion>0.1.10.0</FileVersion>
-    <AssemblyVersion>0.1.10.0</AssemblyVersion>
-    <InformationalVersion>0.1.10</InformationalVersion>
-    <Product>AgentOrb</Product>
-    <Company>AgentOrb</Company>
+    <Version>0.2.0</Version>
+    <FileVersion>0.2.0.0</FileVersion>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <InformationalVersion>0.2.0</InformationalVersion>
+    <Product>IsletDesk</Product>
+    <Company>IsletDesk</Company>
   </PropertyGroup>
 </Project>

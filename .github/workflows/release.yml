@@ -37,9 +37,9 @@ jobs:
 
       - name: Build and test (Release)
         run: |
-          dotnet build AgentOrb.sln -c Release
+          dotnet build IsletDesk.sln -c Release
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet run --project tests/AgentOrb.Tests/AgentOrb.Tests.csproj -c Release
+          dotnet run --project tests/IsletDesk.Tests/IsletDesk.Tests.csproj -c Release
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
       - name: Publish single-file executables
@@ -51,13 +51,13 @@ jobs:
           $common = @('-c','Release','-r','win-x64','--self-contained','true',
             '-p:PublishSingleFile=true','-p:EnableCompressionInSingleFile=true',
             '-p:IncludeNativeLibrariesForSelfExtract=true','-p:DebugType=None','-p:DebugSymbols=false')
-          dotnet publish src/AgentOrb.Desktop/AgentOrb.Desktop.csproj @common -o "$out\runtime"
+          dotnet publish src/IsletDesk.Desktop/IsletDesk.Desktop.csproj @common -o "$out\runtime"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet publish src/AgentOrb.Bridge/AgentOrb.Bridge.csproj @common -o "$out\runtime"
+          dotnet publish src/IsletDesk.Bridge/IsletDesk.Bridge.csproj @common -o "$out\runtime"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          dotnet publish src/AgentOrb.Setup/AgentOrb.Setup.csproj @common -o "$out\setup"
+          dotnet publish src/IsletDesk.Setup/IsletDesk.Setup.csproj @common -o "$out\setup"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          Copy-Item "$out\runtime\AgentOrb.exe","$out\runtime\AgentOrb.Bridge.exe" "$out\setup"
+          Copy-Item "$out\runtime\IsletDesk.exe","$out\runtime\IsletDesk.Bridge.exe" "$out\setup"
 
       - name: Package and hash
         shell: pwsh
@@ -65,8 +65,8 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $version = $env:RELEASE_VERSION
           $out = 'artifacts\release'
-          $runtimeZip = "AgentOrb-v$version-win-x64.zip"
-          $setupZip = "AgentOrb-Setup-v$version-win-x64.zip"
+          $runtimeZip = "IsletDesk-v$version-win-x64.zip"
+          $setupZip = "IsletDesk-Setup-v$version-win-x64.zip"
           Compress-Archive -Path "$out\runtime\*" -DestinationPath $runtimeZip -Force
           Compress-Archive -Path "$out\setup\*" -DestinationPath $setupZip -Force
           $hashes = Get-FileHash $runtimeZip,$setupZip -Algorithm SHA256 |
@@ -78,15 +78,15 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: AgentOrb ${{ github.ref_name }}
+          name: IsletDesk ${{ github.ref_name }}
           draft: false
           prerelease: true
           generate_release_notes: true
           body: |
-            Self-contained Windows x64 packages for AgentOrb ${{ github.ref_name }}.
+            Self-contained Windows x64 packages for IsletDesk ${{ github.ref_name }}.
 
-            - `AgentOrb-Setup-*.zip` — installer (enables RDP host and child sessions; downloads pinned Anode at install time)
-            - `AgentOrb-v*-win-x64.zip` — runtime executables only
+            - `IsletDesk-Setup-*.zip` — installer (enables RDP host and child sessions; downloads pinned Anode at install time)
+            - `IsletDesk-v*-win-x64.zip` — runtime executables only
 
             Verify downloads against `SHA256SUMS.txt`. Installation requires Windows 10/11 Pro or
             Enterprise and an explicit `--accept-rdp-change` acknowledgement. See README.md for
@@ -94,6 +94,6 @@ jobs:
 
             Note: binaries are currently unsigned; SmartScreen may warn.
           files: |
-            AgentOrb-v${{ env.RELEASE_VERSION }}-win-x64.zip
-            AgentOrb-Setup-v${{ env.RELEASE_VERSION }}-win-x64.zip
+            IsletDesk-v${{ env.RELEASE_VERSION }}-win-x64.zip
+            IsletDesk-Setup-v${{ env.RELEASE_VERSION }}-win-x64.zip
             SHA256SUMS.txt

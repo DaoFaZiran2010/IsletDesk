@@ -1,4 +1,4 @@
-# AgentOrb 开源就绪评估与准备清单
+# IsletDesk 开源就绪评估与准备清单
 
 > **状态更新（2026-11-13）**：P0 中"仓库整理 / 许可证 / 文档最小集 / 敏感信息清理"已落地——
 > `git init`（main 分支，首个提交 52 个文件）、`.gitignore` 已排除 `artifacts/ bin/ obj/ .tools/`、
@@ -51,7 +51,7 @@
   ```
   bin/ obj/ artifacts/ .tools/ *.user *.suo .vs/
   ```
-- [ ] 将 `artifacts/`（3.6 GB：历史 zip、安装日志、acceptance 截图、`backups/rdp-pre-repair` 注册表与 ACL 导出）整体移出仓库目录，改为本地归档（如 `../AgentOrb-archive/`），**绝不提交**。
+- [ ] 将 `artifacts/`（3.6 GB：历史 zip、安装日志、acceptance 截图、`backups/rdp-pre-repair` 注册表与 ACL 导出）整体移出仓库目录，改为本地归档（如 `../IsletDesk-archive/`），**绝不提交**。
 - [ ] `src/` 内 364 MB 主要来自 bin/obj 构建产物，靠 .gitignore 排除即可；可额外执行一次清理脚本验证仓库体积 < 5 MB。
 - [ ] 移除或归档 `obsolete/` 旧版本目录。
 
@@ -74,14 +74,14 @@
   - 当前安装器是**运行时下载**固定 v0.11.4 并校验 SHA-256（不合体分发）——此方式最干净，保持。
   - 若未来在 Release 资产里直接附带 Anode zip，需在 Release 说明和 `THIRD-PARTY-NOTICES.md` 中标注其 MIT 版权。
 - [ ] 新增 `THIRD-PARTY-NOTICES.md`：列明 Anode（MIT）与 .NET 运行时（MIT）两项。
-- [ ] `AgentOrb.Setup` 中固定的 Anode v0.11.4 + SHA-256 写入 `docs/sbom.md`（软件物料清单），随版本更新。
+- [ ] `IsletDesk.Setup` 中固定的 Anode v0.11.4 + SHA-256 写入 `docs/sbom.md`（软件物料清单），随版本更新。
 
 #### 4. 文档与贡献指南（最小集）
 
 - [ ] `README.md`（中英文至少英文）：是什么、灵动岛截图/GIF、30 秒上手、系统要求（**Windows 10/11 Pro+**）、架构图、免责声明。
 - [ ] `docs/ARCHITECTURE.md`：五个项目的职责与数据流（Bridge↔Desktop 命名管道、Desktop↔Anode CLI、child session 原理）。
 - [ ] `docs/SECURITY.md`：**必须写**——威胁模型（本地单用户、MCP 输入即在本机桌面执行、非沙箱）、漏洞上报渠道、已知边界（见风险清单 R4）。
-- [ ] `CONTRIBUTING.md`：本地构建指引（项目自带 `dotnet` 于 `.tools/`，贡献者需知 bootstrap 方式）、测试运行方式（`dotnet run --project tests/AgentOrb.Tests`）、提交流程。
+- [ ] `CONTRIBUTING.md`：本地构建指引（项目自带 `dotnet` 于 `.tools/`，贡献者需知 bootstrap 方式）、测试运行方式（`dotnet run --project tests/IsletDesk.Tests`）、提交流程。
 - [ ] `CODE_OF_CONDUCT.md`（Contributor Covenant 2.1）。
 - [ ] `CHANGELOG.md`：回溯记录 v0.1.0–v0.1.8 的演进（可从本地记忆/发布包整理）。
 
@@ -90,7 +90,7 @@
 - [ ] 确立语义化版本规则：当前 0.1.x 阶段 = "0.x 时期，次版本可含破坏性变更"，1.0 门槛单独定义（建议：代码签名 + 自动更新 + 崩溃恢复后再发 1.0）。
 - [ ] GitHub Actions 工作流（`ci.yml`）：PR/主干触发 `dotnet build -c Release` + 24 项测试，构建产物不进仓库。
 - [ ] GitHub Actions 工作流（`release.yml`）：打 `v*` tag 自动 publish 三个单文件 exe、生成 zip、计算 SHA-256 并写入 Release Notes——替代当前纯手工流程。
-- [ ] 发布资产命名与目录结构规范化：`AgentOrb-v{ver}-win-x64.zip` / `AgentOrb-Setup-v{ver}-win-x64.zip`（保持现有命名）。
+- [ ] 发布资产命名与目录结构规范化：`IsletDesk-v{ver}-win-x64.zip` / `IsletDesk-Setup-v{ver}-win-x64.zip`（保持现有命名）。
 - [ ] 建立 `docs/release-checklist.md`：发版前逐项核对（测试、哈希、状态文件、Codex 配置回归）。
 
 ### P1 —— 公开后 1–2 个迭代内完成
@@ -100,7 +100,7 @@
 - [ ] `docs/USAGE.md`：完整使用手册（灵动岛交互、查看器控制、租约机制、Codex/Claude 接入示例）。
 - [ ] `docs/TROUBLESHOOTING.md`：已知的 RDP 0x80070005、Anode 管道 ACL、seat 停止等排障经验（本机已有实战记录可整理）。
 - [ ] 英文界面文案核对（当前 UI 中文为主，开源建议 i18n 或至少 README 双语）。
-- [ ] 商标检索："AgentOrb" 名称与图形标识在目标市场（至少中国、美国）做商标检索，确认无冲突后注册。
+- [ ] 商标检索："IsletDesk" 名称与图形标识在目标市场（至少中国、美国）做商标检索，确认无冲突后注册。
 
 ### P2 —— 成熟期
 

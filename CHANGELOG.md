@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to AgentOrb are documented in this file.
+All notable changes to IsletDesk are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses
 semantic versioning. Releases before 1.0.0 are early development and may change interfaces.
 
@@ -9,9 +9,19 @@ semantic versioning. Releases before 1.0.0 are early development and may change 
 - GitHub Actions CI (build + 24 tests on Windows) and tag-triggered release workflow that
   publishes self-contained win-x64 packages with SHA-256 checksums.
 
+## [0.2.0] - 2026-11-15
+
+- **Renamed the project to IsletDesk.** `AgentOrb` collided with unrelated search results; the new
+  name is unique on GitHub (island + desktop) and keeps the product meaning.
+- Executables are now `IsletDesk.exe`, `IsletDesk.Bridge.exe` and `IsletDesk.Setup.exe`; the status
+  pipe is `isletdesk-status-v1`, the single-instance mutex is `Global\IsletDesk.SingleInstance.v1`,
+  and the Codex MCP block is `[mcp_servers.isletdesk]`.
+- Existing installs must be uninstalled before upgrading: the old autostart entry and Codex managed
+  block are not migrated automatically.
+
 ## [0.1.10] - 2026-11-13
 
-- Machine-wide single-instance lock (`Global\`): prevents a second AgentOrb from starting inside
+- Machine-wide single-instance lock (`Global\`): prevents a second IsletDesk from starting inside
   the Agent seat, which previously split named-pipe status events between two islands.
 - Non-console duplicate instances now exit silently instead of leaving a dialog in the seat.
 
@@ -32,7 +42,7 @@ semantic versioning. Releases before 1.0.0 are early development and may change 
 
 ## [0.1.7] - 2026-11-13
 
-- Installer state snapshot fix: upgrading no longer records AgentOrb's own autostart entry as
+- Installer state snapshot fix: upgrading no longer records IsletDesk's own autostart entry as
   the pre-install value, so `uninstall` restores the correct previous state.
 
 ## [0.1.6] - 2026-11-13
@@ -47,7 +57,7 @@ semantic versioning. Releases before 1.0.0 are early development and may change 
 
 ## [0.1.4] - 2026-11-13
 
-- New `AgentOrb.Setup`: read-only `check`, consented `install`/`uninstall`, RDP and child-session
+- New `IsletDesk.Setup`: read-only `check`, consented `install`/`uninstall`, RDP and child-session
   provisioning, pinned Anode v0.11.4 download with SHA-256 verification, reversible managed
   Codex MCP config block, per-user autostart.
 

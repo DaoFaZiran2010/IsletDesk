@@ -1,4 +1,4 @@
-# Contributing to AgentOrb
+# Contributing to IsletDesk
 
 Thanks for taking the time to contribute. This project is small, Windows-specific and
 deliberately dependency-free — please keep it that way where you can.
@@ -11,9 +11,9 @@ deliberately dependency-free — please keep it that way where you can.
 
 ```bat
 git clone <your-fork>
-cd AgentOrb
-dotnet build AgentOrb.sln -c Release
-dotnet run --project tests\AgentOrb.Tests\AgentOrb.Tests.csproj -c Release
+cd IsletDesk
+dotnet build IsletDesk.sln -c Release
+dotnet run --project tests\IsletDesk.Tests\IsletDesk.Tests.csproj -c Release
 ```
 
 The test project is a plain console runner (no xUnit/NUnit) so the repository keeps zero
@@ -22,7 +22,7 @@ NuGet dependencies. `dotnet run` prints `PASS`/`FAIL` per test and exits non-zer
 Running the desktop app during development:
 
 ```bat
-dotnet run --project src\AgentOrb.Desktop -c Debug -- --demo
+dotnet run --project src\IsletDesk.Desktop -c Debug -- --demo
 ```
 
 `--demo` cycles status events through the island without starting Anode or a seat.
@@ -66,7 +66,7 @@ These are not style preferences; breaking them has caused real bugs:
 
 ## Reporting bugs
 
-Include the AgentOrb version (`AgentOrb.Setup.exe check` output), Windows edition and build,
+Include the IsletDesk version (`IsletDesk.Setup.exe check` output), Windows edition and build,
 the MCP client you used, and the relevant lines from `%LOCALAPPDATA%\Anode\anode.log`.
 Redact paths that contain your user name if you prefer.
 

@@ -1,8 +1,8 @@
-# AgentOrb
+# IsletDesk
 
 **A supervised Windows desktop for any AI agent.**
 
-AgentOrb gives an AI agent a real Windows desktop of its own — a child session with its own
+IsletDesk gives an AI agent a real Windows desktop of its own — a child session with its own
 screen, pointer and keyboard focus — while you keep working on yours. A small status island
 at the top of the screen reports what the agent is doing, without you having to watch it.
 
@@ -16,7 +16,7 @@ Agents that use a computer need a screen, a pointer and a foreground window. Sha
 painful: the pointer jumps away mid-sentence, windows steal focus, and you cannot tell what
 the agent changed.
 
-AgentOrb separates the two. The agent drives a Windows **child session** (the seat) through
+IsletDesk separates the two. The agent drives a Windows **child session** (the seat) through
 [Anode](https://github.com/skulitom/Anode); your desktop keeps its own pointer, keyboard focus
 and windows. Nothing the agent clicks or types reaches your session.
 
@@ -27,7 +27,7 @@ and windows. Nothing the agent clicks or types reaches your session.
   elapsed time and source, without ever taking focus from your window.
 - **Real input isolation** — verified: 40 characters typed and a click inside the seat leave the
   user's cursor position and foreground window unchanged.
-- **MCP first** — the agent talks to `AgentOrb.Bridge.exe`, an MCP stdio server that exposes
+- **MCP first** — the agent talks to `IsletDesk.Bridge.exe`, an MCP stdio server that exposes
   41 desktop tools (click, type, screenshot, windows, processes, inspect, jobs, gamepad …).
 - **One-click peek and take-over** — click the island to open the seat viewer, click again to
   hide it and return focus to where you were.
@@ -41,22 +41,22 @@ and windows. Nothing the agent clicks or types reaches your session.
 ## Requirements
 
 - Windows 10 or 11, **Pro / Enterprise / Education**, x64. Home edition cannot host the
-  child session AgentOrb relies on.
+  child session IsletDesk relies on.
 - Administrator rights **once**, for installation: enabling the Remote Desktop listener and
   child sessions is a system-level change.
 - The installer downloads Anode from its GitHub releases (pinned version + SHA-256).
 
-> AgentOrb is **not a security sandbox**. The seat signs in as you and shares your files,
+> IsletDesk is **not a security sandbox**. The seat signs in as you and shares your files,
 > account and network. Treat every MCP client you connect as something you would let use your
 > own desktop, because that is exactly what it gets.
 
 ## Install
 
-1. Download `AgentOrb-Setup-vX.Y.Z-win-x64.zip` and extract it.
+1. Download `IsletDesk-Setup-vX.Y.Z-win-x64.zip` and extract it.
 2. Run, from a normal (non-elevated) terminal:
 
    ```bat
-   AgentOrb.Setup.exe install --accept-rdp-change
+   IsletDesk.Setup.exe install --accept-rdp-change
    ```
 
    `--accept-rdp-change` is required: the installer enables the Remote Desktop host and
@@ -65,13 +65,13 @@ and windows. Nothing the agent clicks or types reaches your session.
 3. Verify the result at any time:
 
    ```bat
-   AgentOrb.Setup.exe check
+   IsletDesk.Setup.exe check
    ```
 
-4. `AgentOrb.Setup.exe uninstall` removes the runtime, the Codex managed block and the
+4. `IsletDesk.Setup.exe uninstall` removes the runtime, the Codex managed block and the
    autostart entry, and restores the previous RDP / child-session settings.
 
-The installer places the app in `%LOCALAPPDATA%\Programs\AgentOrb` and adds a per-user
+The installer places the app in `%LOCALAPPDATA%\Programs\IsletDesk` and adds a per-user
 autostart entry. Start it from the Start Menu, the desktop shortcut, or the tray icon.
 
 ## Use it with Codex
@@ -80,10 +80,10 @@ The installer appends a managed block to `%USERPROFILE%\.codex\config.toml`, lea
 provider configuration untouched:
 
 ```toml
-# >>> AgentOrb managed block >>>
-[mcp_servers.agentorb]
-command = "C:\\Users\\<you>\\AppData\\Local\\Programs\\AgentOrb\\AgentOrb.Bridge.exe"
-# <<< AgentOrb managed block <<<
+# >>> IsletDesk managed block >>>
+[mcp_servers.isletdesk]
+command = "C:\\Users\\<you>\\AppData\\Local\\Programs\\IsletDesk\\IsletDesk.Bridge.exe"
+# <<< IsletDesk managed block <<<
 ```
 
 Restart the Codex client, then just ask for desktop work:
@@ -96,8 +96,8 @@ What you will see:
 2. the island expands and reports the action, agent name and elapsed time;
 3. the seat (not your desktop) receives every click and keystroke.
 
-Any other MCP-capable agent can be wired the same way — point it at `AgentOrb.Bridge.exe`.
-Agents that cannot speak MCP can drive the seat through the Anode CLI; AgentOrb's island keeps
+Any other MCP-capable agent can be wired the same way — point it at `IsletDesk.Bridge.exe`.
+Agents that cannot speak MCP can drive the seat through the Anode CLI; IsletDesk's island keeps
 reporting through the same pipe.
 
 ## The island
@@ -116,13 +116,13 @@ The viewer deliberately *does* take focus when opened, because that is how you t
 
 ```
 ┌──────────────────┐     MCP over stdio      ┌─────────────────────┐
-│  Agent (Codex,   │ ◄─────────────────────► │ AgentOrb.Bridge.exe │
+│  Agent (Codex,   │ ◄─────────────────────► │ IsletDesk.Bridge.exe │
 │  Claude, …)      │                         │  (MCP server)       │
 └──────────────────┘                         └──────────┬──────────┘
                                                        │ named pipe
-                                                       │ \\.\pipe\agentorb-status-v1
+                                                       │ \\.\pipe\isletdesk-status-v1
                                             ┌──────────▼──────────┐
-                                            │ AgentOrb.Desktop    │
+                                            │ IsletDesk.Desktop    │
                                             │  status island UI   │
                                             └──────────┬──────────┘
                                                        │ CLI
@@ -134,20 +134,20 @@ The viewer deliberately *does* take focus when opened, because that is how you t
 
 | Project | Responsibility |
 |---|---|
-| `AgentOrb.Core` | Status contracts, JSON format, tool-name mapping |
-| `AgentOrb.Anode` | Anode CLI wrapper (status / show / hide / start / stop) |
-| `AgentOrb.Desktop` | WPF island, tray, viewer toggle, named-pipe status server |
-| `AgentOrb.Bridge` | MCP stdio server, pipe client, call tracking and redaction |
-| `AgentOrb.Setup` | Installer: RDP/child-session setup, Anode provisioning, Codex config |
-| `tests/AgentOrb.Tests` | 24 dependency-free tests covering pipes, MCP and installer logic |
+| `IsletDesk.Core` | Status contracts, JSON format, tool-name mapping |
+| `IsletDesk.Anode` | Anode CLI wrapper (status / show / hide / start / stop) |
+| `IsletDesk.Desktop` | WPF island, tray, viewer toggle, named-pipe status server |
+| `IsletDesk.Bridge` | MCP stdio server, pipe client, call tracking and redaction |
+| `IsletDesk.Setup` | Installer: RDP/child-session setup, Anode provisioning, Codex config |
+| `tests/IsletDesk.Tests` | 24 dependency-free tests covering pipes, MCP and installer logic |
 
 ## Build from source
 
 Requires the .NET 8 SDK on Windows.
 
 ```bat
-dotnet build AgentOrb.sln -c Release
-dotnet run --project tests\AgentOrb.Tests\AgentOrb.Tests.csproj -c Release
+dotnet build IsletDesk.sln -c Release
+dotnet run --project tests\IsletDesk.Tests\IsletDesk.Tests.csproj -c Release
 ```
 
 The test project has no external test framework: it is a plain console runner, so the build

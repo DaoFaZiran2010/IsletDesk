@@ -1,6 +1,6 @@
 # Third-party notices
 
-AgentOrb itself is MIT licensed (see `LICENSE`). It depends on the following third-party
+IsletDesk itself is MIT licensed (see `LICENSE`). It depends on the following third-party
 components.
 
 ## Anode
@@ -39,7 +39,7 @@ modify the MIT terms above.
 
 ## .NET 8 runtime
 
-AgentOrb is published self-contained, so the .NET runtime is redistributed inside its
+IsletDesk is published self-contained, so the .NET runtime is redistributed inside its
 executables.
 
 - Project: https://github.com/dotnet/runtime
@@ -47,7 +47,7 @@ executables.
 
 ## Microsoft Windows components
 
-AgentOrb uses Windows APIs and the Remote Desktop ActiveX control (`mstscax.dll`) that ship
+IsletDesk uses Windows APIs and the Remote Desktop ActiveX control (`mstscax.dll`) that ship
 with Windows. No Microsoft binaries are redistributed by this project; they are used from the
 operating system on the user's machine.
 
