@@ -33,8 +33,24 @@ IsletDesk 把两者分开：Agent 通过 [Anode](https://github.com/skulitom/Ano
 
 ## 安装
 
-1. 下载 `IsletDesk-Setup-vX.Y.Z-win-x64.zip` 并解压。
-2. 在**普通权限**终端执行：
+1. 从 [Releases](https://github.com/DaoFaZiran2010/IsletDesk/releases) 下载
+   `IsletDesk-Setup-vX.Y.Z-win-x64.zip` 并解压。压缩包是平铺结构，根目录只有三个可执行文件：
+
+   | 文件 | 作用 |
+   |---|---|
+   | `IsletDesk.Setup.exe` | 安装器（`install` / `check` / `uninstall`） |
+   | `IsletDesk.exe` | 灵动岛 + 托盘程序 |
+   | `IsletDesk.Bridge.exe` | 供 Agent 连接的 MCP stdio 服务器 |
+
+2. 建议先校验再运行：
+
+   ```bat
+   certutil -hashfile IsletDesk-Setup-vX.Y.Z-win-x64.zip SHA256
+   ```
+
+   与同一 Release 里 `SHA256SUMS.txt` 对应行比对。
+
+3. 在**普通权限**终端执行：
 
    ```bat
    IsletDesk.Setup.exe install --accept-rdp-change
@@ -42,15 +58,21 @@ IsletDesk 把两者分开：Agent 通过 [Anode](https://github.com/skulitom/Ano
 
    `--accept-rdp-change` 必须显式给出：安装器会开启远程桌面主机与子会话，并记录变更前的值，供卸载时恢复。
 
-3. 随时检查状态：
+4. 随时检查状态：
 
    ```bat
    IsletDesk.Setup.exe check
    ```
 
-4. `IsletDesk.Setup.exe uninstall` 会移除运行时、Codex 管理块和自启动项，并还原 RDP/子会话设置。
+5. `IsletDesk.Setup.exe uninstall` 会移除运行时、Codex 管理块和自启动项，并还原 RDP/子会话设置。
 
 安装位置为 `%LOCALAPPDATA%\Programs\IsletDesk`，并写入当前用户自启动项。可从开始菜单、桌面快捷方式或托盘启动。
+
+> **从 AgentOrb（v0.1.10 及更早）升级**：那些版本仍用旧名发布，压缩包是
+> `AgentOrb-Setup-v0.1.10-win-x64.zip`，内部可执行文件为 `AgentOrb.Setup.exe`、`AgentOrb.exe`、
+> `AgentOrb.Bridge.exe`。改名是破坏性变更——旧自启动项和旧的 `[mcp_servers.agentorb]` Codex
+> 配置块**不会**自动迁移。请先 `AgentOrb.Setup.exe uninstall`，再安装 IsletDesk。两者绝不能并存，
+> 否则会争抢同一个 seat。
 
 ## 配合 Codex 使用
 
@@ -115,9 +137,13 @@ dotnet run --project tests\IsletDesk.Tests\IsletDesk.Tests.csproj -c Release
 
 ## 当前状态
 
-能用但早期：v0.1.10 已在 Windows 11 + Codex 桌面版实测通过。
+能用但早期：**v0.2.0** 已在 Windows 11 实测通过——输入隔离、灵动岛、41 个 MCP 工具和 seat 租约都在真实 MCP 客户端上跑过。
 尚未完成：代码签名（会触发 SmartScreen）、自动更新、崩溃恢复、多 seat 并发。
-开源准备清单见 `docs/opensource-readiness.md`。
+
+发布已自动化：推送 `v*` tag 会触发构建、24 项测试，并上传三个附件
+（`IsletDesk-v*-win-x64.zip`、`IsletDesk-Setup-v*-win-x64.zip`、`SHA256SUMS.txt`）。
+逐步清单见 [docs/release-checklist.md](docs/release-checklist.md)，开源准备清单见
+[docs/opensource-readiness.md](docs/opensource-readiness.md)。
 
 ## 许可证
 

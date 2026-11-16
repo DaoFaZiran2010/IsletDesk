@@ -6,10 +6,9 @@ semantic versioning. Releases before 1.0.0 are early development and may change 
 
 ## [Unreleased]
 
-- GitHub Actions CI (build + 24 tests on Windows) and tag-triggered release workflow that
-  publishes self-contained win-x64 packages with SHA-256 checksums.
+_Nothing yet._
 
-## [0.2.0] - 2026-11-15
+## [0.2.0] - 2026-11-16
 
 - **Renamed the project to IsletDesk.** `AgentOrb` collided with unrelated search results; the new
   name is unique on GitHub (island + desktop) and keeps the product meaning.
@@ -18,6 +17,11 @@ semantic versioning. Releases before 1.0.0 are early development and may change 
   and the Codex MCP block is `[mcp_servers.isletdesk]`.
 - Existing installs must be uninstalled before upgrading: the old autostart entry and Codex managed
   block are not migrated automatically.
+- GitHub Actions CI (build + 24 tests on Windows) and a tag-triggered release workflow that publishes
+  `IsletDesk-v0.2.0-win-x64.zip`, `IsletDesk-Setup-v0.2.0-win-x64.zip` and `SHA256SUMS.txt`
+  as a stable (non-prerelease) release.
+- Added `docs/release-checklist.md`, and made the README install section state the exact archive
+  and executable names it should expect — the v0.1.10 downloads still carry the `AgentOrb` names.
 
 ## [0.1.10] - 2026-11-13
 

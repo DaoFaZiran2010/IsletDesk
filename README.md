@@ -52,8 +52,25 @@ and windows. Nothing the agent clicks or types reaches your session.
 
 ## Install
 
-1. Download `IsletDesk-Setup-vX.Y.Z-win-x64.zip` and extract it.
-2. Run, from a normal (non-elevated) terminal:
+1. Download `IsletDesk-Setup-vX.Y.Z-win-x64.zip` from
+   [Releases](https://github.com/DaoFaZiran2010/IsletDesk/releases) and extract it. The archive is
+   flat — three executables at the root, nothing else:
+
+   | File | Role |
+   |---|---|
+   | `IsletDesk.Setup.exe` | installer (`install` / `check` / `uninstall`) |
+   | `IsletDesk.exe` | status island + tray app |
+   | `IsletDesk.Bridge.exe` | MCP stdio server that agents connect to |
+
+2. Recommended — verify the download before running it:
+
+   ```bat
+   certutil -hashfile IsletDesk-Setup-vX.Y.Z-win-x64.zip SHA256
+   ```
+
+   Compare the output with the matching line in `SHA256SUMS.txt` from the same release.
+
+3. Run, from a normal (non-elevated) terminal:
 
    ```bat
    IsletDesk.Setup.exe install --accept-rdp-change
@@ -62,17 +79,24 @@ and windows. Nothing the agent clicks or types reaches your session.
    `--accept-rdp-change` is required: the installer enables the Remote Desktop host and
    child sessions, and records the previous values so `uninstall` can restore them.
 
-3. Verify the result at any time:
+4. Verify the result at any time:
 
    ```bat
    IsletDesk.Setup.exe check
    ```
 
-4. `IsletDesk.Setup.exe uninstall` removes the runtime, the Codex managed block and the
+5. `IsletDesk.Setup.exe uninstall` removes the runtime, the Codex managed block and the
    autostart entry, and restores the previous RDP / child-session settings.
 
 The installer places the app in `%LOCALAPPDATA%\Programs\IsletDesk` and adds a per-user
 autostart entry. Start it from the Start Menu, the desktop shortcut, or the tray icon.
+
+> **Upgrading from AgentOrb (v0.1.10 and earlier).** Those releases are published under the old
+> name: the archive is `AgentOrb-Setup-v0.1.10-win-x64.zip` and the executables inside are
+> `AgentOrb.Setup.exe`, `AgentOrb.exe` and `AgentOrb.Bridge.exe`. The rename is breaking — the old
+> autostart entry and the old `[mcp_servers.agentorb]` Codex block are **not** migrated. Run
+> `AgentOrb.Setup.exe uninstall` first, then install IsletDesk. Never run both side by side: they
+> would compete for the same seat.
 
 ## Use it with Codex
 
@@ -155,9 +179,15 @@ has zero NuGet dependencies.
 
 ## Status
 
-Early but working: v0.1.10 is installed and verified on Windows 11 with Codex desktop.
+Early but working: **v0.2.0** is installed and verified on Windows 11 — input isolation, the status
+island, the 41 MCP tools and the seat lease were all exercised against real MCP clients.
 Not yet done: code signing (SmartScreen will warn), auto-update, crash recovery, multiple
-concurrent seats. See `docs/opensource-readiness.md` for the open-source checklist.
+concurrent seats.
+
+Release packaging is automated: pushing a `v*` tag runs the build, the 24 tests, and the upload of
+three assets (`IsletDesk-v*-win-x64.zip`, `IsletDesk-Setup-v*-win-x64.zip`, `SHA256SUMS.txt`). The
+step-by-step checklist is in [docs/release-checklist.md](docs/release-checklist.md); the
+open-source readiness list is in [docs/opensource-readiness.md](docs/opensource-readiness.md).
 
 ## License
 

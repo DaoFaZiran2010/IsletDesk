@@ -80,7 +80,7 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: IsletDesk ${{ github.ref_name }}
           draft: false
-          prerelease: true
+          prerelease: false
           generate_release_notes: true
           body: |
             Self-contained Windows x64 packages for IsletDesk ${{ github.ref_name }}.
@@ -88,9 +88,14 @@ jobs:
             - `IsletDesk-Setup-*.zip` — installer (enables RDP host and child sessions; downloads pinned Anode at install time)
             - `IsletDesk-v*-win-x64.zip` — runtime executables only
 
+            The setup archive is flat: `IsletDesk.Setup.exe`, `IsletDesk.exe`, `IsletDesk.Bridge.exe`.
+
             Verify downloads against `SHA256SUMS.txt`. Installation requires Windows 10/11 Pro or
             Enterprise and an explicit `--accept-rdp-change` acknowledgement. See README.md for
             usage and SECURITY.md for the threat model.
+
+            Upgrading from AgentOrb (v0.1.10 or earlier): run `AgentOrb.Setup.exe uninstall` first —
+            the old autostart entry and Codex managed block are not migrated.
 
             Note: binaries are currently unsigned; SmartScreen may warn.
           files: |
